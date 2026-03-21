@@ -14,4 +14,4 @@ class Main {
         result.print();
         System.out.println("Max sum of subarray = " + result.max());
     }
-}c
+}
