@@ -14,31 +14,36 @@ public class SubArraySum {
      */
     public static MaxSubArrayResult maxSubArraySum(int[] arr){
         int max = 0;
-        int max_start = 0, max_end = 0;
+        int maxStart = 0, maxEnd = 0;
         for(int start = 0; start < arr.length; start++) {
             int currentMax = 0;
             for (int end = start; end < arr.length; end++) {
                 currentMax += arr[end];
                 if(currentMax > max){
-                    max_start = start; max_end = end;
+                    maxStart = start; maxEnd = end;
                     max = currentMax;
                 }
             }
         }
-        return new MaxSubArrayResult(max,max_start, max_end);
+        return new MaxSubArrayResult(max,maxStart, maxEnd);
 //        return max;
     }
 
-    public static int kadaneSum(int[] arr) {
-        int max = 0;
+    public static MaxSubArrayResult kadaneSum(int[] arr) {
 
-        for(int start = 0; start < arr.length; start++) {
-            int currentMax = 0;
-            for (int end = start; end < arr.length; end++) {
-                currentMax += arr[end];
-                max = Math.max(currentMax, max);
+        int currentSum = 0;
+        int maxSum = 0;
+        int maxStart = 0, maxEnd = 0;
+        for(int i = 0; i < arr.length; i++) {
+            currentSum += arr[i];
+            maxSum = Math.max(currentSum, maxSum);
+
+            if(currentSum < 0) {
+                currentSum = 0;
+//                max_start = i + 1;
             }
+
         }
-        return max;
+        return new MaxSubArrayResult(maxSum,0,0);
     }
 }
