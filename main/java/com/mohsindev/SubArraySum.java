@@ -19,6 +19,7 @@ public class SubArraySum {
             int currentMax = 0;
             for (int end = start; end < arr.length; end++) {
                 currentMax += arr[end];
+//                max = Math.max(currentMax, max);
                 if(currentMax > max){
                     maxStart = start; maxEnd = end;
                     max = currentMax;
@@ -29,6 +30,11 @@ public class SubArraySum {
 //        return max;
     }
 
+    /**
+     * Kadane's Algorithm
+     * @param arr
+     * @return
+     */
     public static MaxSubArrayResult kadaneSum(int[] arr) {
 
         int currentSum = 0;
@@ -36,14 +42,18 @@ public class SubArraySum {
         int maxStart = 0, maxEnd = 0;
         for(int i = 0; i < arr.length; i++) {
             currentSum += arr[i];
-            maxSum = Math.max(currentSum, maxSum);
+//            maxSum = Math.max(currentSum, maxSum);
+            if(currentSum > maxSum) {
+                maxSum = currentSum;
+                maxEnd = i;
+            }
 
             if(currentSum < 0) {
                 currentSum = 0;
-//                max_start = i + 1;
+                maxStart = (i + 1) % arr.length;
             }
 
         }
-        return new MaxSubArrayResult(maxSum,0,0);
+        return new MaxSubArrayResult(maxSum,maxStart,maxEnd);
     }
 }
