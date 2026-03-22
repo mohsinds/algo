@@ -32,16 +32,16 @@ public class SubArraySum {
 
     /**
      * Kadane's Algorithm
-     * @param arr
+     * @param nums
      * @return
      */
-    public static MaxSubArrayResult kadaneSum(int[] arr) {
+    public static MaxSubArrayResult kadaneSum(int[] nums) {
 
         int currentSum = 0;
         int maxSum = 0;
         int maxStart = 0, maxEnd = 0;
-        for(int i = 0; i < arr.length; i++) {
-            currentSum += arr[i];
+        for(int i = 0; i < nums.length; i++) {
+            currentSum += nums[i];
 //            maxSum = Math.max(currentSum, maxSum);
             if(currentSum > maxSum) {
                 maxSum = currentSum;
@@ -50,7 +50,7 @@ public class SubArraySum {
 
             if(currentSum < 0) {
                 currentSum = 0;
-                maxStart = (i + 1) % arr.length;
+                maxStart = (i + 1) % nums.length;
             }
 
         }
