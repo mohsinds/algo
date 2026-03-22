@@ -1,4 +1,4 @@
-package com.mohsindev;
+package com.mohsindev.array;
 
 public class SubArraySum {
     public record MaxSubArrayResult (int max, int start, int end){
