@@ -2,12 +2,14 @@ package com.mohsindev.tree;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class BinaryTree {
 //    public int[] tree = {1,2,4,-1,-1,5,-1,-1,3,-1,6,-1,-1};
 
     int idx = -1;
+
     public Node buildTree(int[] nodes) {
         idx++;
         if(nodes[idx] == -1)
@@ -18,7 +20,6 @@ public class BinaryTree {
         newNode.right = buildTree(nodes);
         return newNode;
     }
-
 
     public ArrayList<Integer> preorderNLR(Node node) {
         ArrayList<Integer> out = new ArrayList<>();
@@ -72,4 +73,55 @@ public class BinaryTree {
         }
         return out;
     }
+
+    public int countOfNodes(Node node) {
+        if(node == null)
+            return 0;
+
+        int x = 0, y = 0;
+        x = countOfNodes(node.left);
+        y = countOfNodes(node.right);
+
+        return x + y + 1;
+    }
+
+    public int sumOfNodes(Node node) {
+        if(node == null)
+            return 0;
+
+        return sumOfNodes(node.left) + sumOfNodes(node.right) + node.data;
+    }
+
+    public int heightOfTree(Node node) {
+        if(node == null)
+            return 0;
+
+        return Math.max(heightOfTree(node.left), heightOfTree(node.right)) + 1;
+
+//        if(node == null)
+//            return 0;
+//
+//        Queue<Node> queue = new LinkedList<>();
+//        queue.add(node);
+//        queue.add(null);
+//        int height = 0;
+//
+//        while(!queue.isEmpty()) {
+//            Node n = queue.poll();
+//            if(n == null) {
+//                height++;
+//                if(queue.isEmpty())
+//                    break;
+//                else
+//                    queue.add(n);
+//            }
+//            else {
+//                if(n.left != null) queue.add(n.left);
+//                if(n.right != null) queue.add(n.right);
+//            }
+//        }
+//
+//        return height;
+    }
+
 }

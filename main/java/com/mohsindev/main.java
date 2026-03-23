@@ -33,6 +33,9 @@ class Main {
         System.out.println("Postorder (LRN): " + binaryTree.postorderLRN(root));
         System.out.println("Inorder (LNR): " + binaryTree.inorderLNR(root));
         System.out.println("Level Order (BFS): " + binaryTree.levelOrderBFS(root));
+        System.out.println("Count nodes: " + binaryTree.countOfNodes(root));
+        System.out.println("Sum of nodes: " + binaryTree.sumOfNodes(root));
+        System.out.println("Height of tree: " + binaryTree.heightOfTree(root));
         System.out.println("root node: " + root.data);
     }
 }
