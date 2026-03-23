@@ -2,7 +2,6 @@ package com.mohsindev.tree;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Queue;
 
 public class BinaryTree {
@@ -92,11 +91,53 @@ public class BinaryTree {
         return sumOfNodes(node.left) + sumOfNodes(node.right) + node.data;
     }
 
-    public int heightOfTree(Node node) {
+    public int diameter(Node node) {
+        if(node == null)
+            return 0;
+        int leftDiameter = diameter(node.left);
+        int rightDiameter = diameter(node.right);
+
+        int height = height(node.left) + height(node.right) + 1;
+        return Math.max(Math.max(leftDiameter, rightDiameter), height);
+
+    }
+    class DiameterInfo {
+        public int height;
+        public int diameter;
+
+        public DiameterInfo(int height, int diameter) {
+            this.height = height;
+            this.diameter = diameter;
+        }
+
+    }
+    public int optimizedDiameter(Node node) {
+        DiameterInfo d = this.calcOptimizedDiameter(node);
+        return d.diameter;
+    }
+    public DiameterInfo calcOptimizedDiameter(Node node) {
+        if(node == null)
+            return new DiameterInfo(0,0);
+
+        DiameterInfo leftDiameter = calcOptimizedDiameter(node.left);
+        DiameterInfo rightDiameter = calcOptimizedDiameter(node.right);
+
+        int myHeight = Math.max(leftDiameter.height, rightDiameter.height) + 1;
+
+        int diameter1 = leftDiameter.diameter;
+        int diameter2 = rightDiameter.diameter;
+        int diameter3 = leftDiameter.height + rightDiameter.height + 1;
+
+        int myDiameter = Math.max(Math.max(diameter1, diameter2), diameter3);
+
+        return new DiameterInfo(myHeight, myDiameter);
+
+    }
+    public int height(Node node) {
         if(node == null)
             return 0;
 
-        return Math.max(heightOfTree(node.left), heightOfTree(node.right)) + 1;
+        return Math.max(height(node.left), height(node.right)) + 1;
 
 //        if(node == null)
 //            return 0;

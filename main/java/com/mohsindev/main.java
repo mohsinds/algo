@@ -35,7 +35,9 @@ class Main {
         System.out.println("Level Order (BFS): " + binaryTree.levelOrderBFS(root));
         System.out.println("Count nodes: " + binaryTree.countOfNodes(root));
         System.out.println("Sum of nodes: " + binaryTree.sumOfNodes(root));
-        System.out.println("Height of tree: " + binaryTree.heightOfTree(root));
+        System.out.println("Height of tree: " + binaryTree.height(root));
+        System.out.println("Diameter of tree: " + binaryTree.diameter(root));
+        System.out.println("Diameter (optimized) of tree: " + binaryTree.optimizedDiameter(root));
         System.out.println("root node: " + root.data);
     }
 }
