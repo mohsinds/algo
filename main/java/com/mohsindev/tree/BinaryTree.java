@@ -9,15 +9,41 @@ public class BinaryTree {
 
     int idx = -1;
 
+    public void resetIdx() {
+        idx = -1;
+    }
     public Node buildTree(int[] nodes) {
         idx++;
-        if(nodes[idx] == -1)
+        if(nodes.length <= idx || nodes[idx] == -1)
             return null;
 
         Node newNode = new Node(nodes[idx]);
         newNode.left = buildTree(nodes);
         newNode.right = buildTree(nodes);
         return newNode;
+    }
+
+
+    public boolean isIdentical(Node node, Node subNode) {
+        if(node == null && subNode == null)
+            return true;
+
+        if(node == null || subNode == null)
+            return false;
+
+        if(node.data == subNode.data){
+            return isIdentical(node.left, subNode.left) && isIdentical(node.right, subNode.right);
+        }
+        return false;
+    }
+    public boolean isSubtree(Node node, Node subNode) {
+        if(subNode == null)
+            return true;
+        if(node == null)
+            return false;
+        if(isIdentical(node, subNode))
+            return true;
+        return isSubtree(node.left, subNode) || isSubtree(node.right, subNode);
     }
 
     public ArrayList<Integer> preorderNLR(Node node) {

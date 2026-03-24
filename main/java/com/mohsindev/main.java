@@ -39,5 +39,22 @@ class Main {
         System.out.println("Diameter of tree: " + binaryTree.diameter(root));
         System.out.println("Diameter (optimized) of tree: " + binaryTree.optimizedDiameter(root));
         System.out.println("root node: " + root.data);
+
+        System.out.println("--------------------------------"); //--------------------------------
+        int[] tree2 = {1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1};
+        binaryTree.resetIdx();
+        Node root2 = binaryTree.buildTree(tree2);
+
+        int[] leftSubtree = {2, 4, -1, -1, 5, -1, -1};
+        binaryTree.resetIdx();
+        Node subRoot = binaryTree.buildTree(leftSubtree);
+        System.out.println("Is left shape a subtree? " + binaryTree.isSubtree(root2, subRoot)); // should output true
+
+        int[] notASubtree = {9, 1, -1, -1};
+        binaryTree.resetIdx();
+        Node fake = binaryTree.buildTree(notASubtree);
+        System.out.println("Is fake a subtree? " + binaryTree.isSubtree(root2, fake)); // should output false
+
+        System.out.println("--------------------------------"); //--------------------------------  
     }
 }
