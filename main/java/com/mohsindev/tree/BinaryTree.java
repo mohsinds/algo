@@ -23,7 +23,6 @@ public class BinaryTree {
         return newNode;
     }
 
-
     public boolean isIdentical(Node node, Node subNode) {
         if(node == null && subNode == null)
             return true;
@@ -98,7 +97,63 @@ public class BinaryTree {
         }
         return out;
     }
+    public int kthLargestSum(Node node, int k) {
+        if (node == null) return -1;
 
+        // List to store all level sums
+        ArrayList<Integer> levelSums = new ArrayList<>();
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.add(node);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int levelSum = 0;
+            for (int i = 0; i < size; i++) {
+                Node current = queue.poll();
+                levelSum += current.data;
+                if (current.left != null) queue.add(current.left);
+                if (current.right != null) queue.add(current.right);
+            }
+            levelSums.add(levelSum);
+        }
+
+        // Sort sums descending to get kth largest
+        levelSums.sort((a, b) -> b - a);
+
+        if (k <= 0 || k > levelSums.size()) return -1;
+
+        return levelSums.get(k - 1);
+    }
+    public int sumOfNodesAtLevel(Node node, int k) {
+        if (node == null) return 0;
+        int sum = 0;
+        int level = 0;
+        Queue<Node> q = new ArrayDeque<>();
+        q.add(node);
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            // If current level is the k-th level
+            if (level == k) {
+                for (int i = 0; i < size; i++) {
+                    Node curr = q.poll();
+                    sum += curr.data;
+                }
+                break; // No need to traverse further
+            } else {
+                for (int i = 0; i < size; i++) {
+                    Node curr = q.poll();
+                    if (curr.left != null) q.add(curr.left);
+                    if (curr.right != null) q.add(curr.right);
+                }
+            }
+            level++;
+        }
+        return sum;
+    }
+//    public int[] treeToArray(Node node) {
+//
+//    }
     public int countOfNodes(Node node) {
         if(node == null)
             return 0;

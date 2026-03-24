@@ -39,6 +39,7 @@ class Main {
         System.out.println("Diameter of tree: " + binaryTree.diameter(root));
         System.out.println("Diameter (optimized) of tree: " + binaryTree.optimizedDiameter(root));
         System.out.println("root node: " + root.data);
+        System.out.println("Sum of nodes at level 2: " + binaryTree.sumOfNodesAtLevel(root, 3));
 
         System.out.println("--------------------------------"); //--------------------------------
         int[] tree2 = {1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1};
@@ -55,6 +56,6 @@ class Main {
         Node fake = binaryTree.buildTree(notASubtree);
         System.out.println("Is fake a subtree? " + binaryTree.isSubtree(root2, fake)); // should output false
 
-        System.out.println("--------------------------------"); //--------------------------------  
+        System.out.println("--------------------------------"); //--------------------------------
     }
 }
