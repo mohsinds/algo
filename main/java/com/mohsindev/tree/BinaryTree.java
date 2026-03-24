@@ -4,17 +4,47 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Queue;
 
+/**
+ * Binary Tree (BT) utilities for a general tree (not necessarily ordered).
+ *
+ * Purpose:
+ * - Use when tree nodes do NOT follow BST ordering rules.
+ * - Covers traversal, shape-based checks, height/diameter, and level-based sums.
+ *
+ * How this class works:
+ * - `buildTree` expects a preorder array with `-1` as null marker.
+ * - Most operations are recursive DFS, while level operations use BFS queue.
+ *
+ * Quick example:
+ * - Input: [1,2,4,-1,-1,5,-1,-1,3,-1,6,-1,-1]
+ * - Represents tree:
+ *        1
+ *      /   \
+ *     2     3
+ *    / \     \
+ *   4   5     6
+ *
+ * Why use BT utilities:
+ * - Interview questions on generic trees usually do not guarantee sorting.
+ * - Traversals + diameter + subtree checks are common foundations.
+ */
 public class BinaryTree {
-//    public int[] tree = {1,2,4,-1,-1,5,-1,-1,3,-1,6,-1,-1};
-
-    int idx = -1;
+    // Stateful cursor used by preorder-with-null-marker builder.
+    private int idx = -1;
 
     public void resetIdx() {
         idx = -1;
     }
+
+    /**
+     * Builds a binary tree from preorder array where -1 means null.
+     *
+     * Example:
+     * - [1,2,-1,-1,3,-1,-1] -> 1 with left=2 and right=3.
+     */
     public Node buildTree(int[] nodes) {
         idx++;
-        if(nodes.length <= idx || nodes[idx] == -1)
+        if (nodes.length <= idx || nodes[idx] == -1)
             return null;
 
         Node newNode = new Node(nodes[idx]);
@@ -27,35 +57,45 @@ public class BinaryTree {
         toArray(node,output);
         return output.stream().mapToInt(Integer::intValue).toArray();
     }
+
     private void toArray(Node node, ArrayList<Integer> out){
-        if(node == null) {
+        if (node == null) {
             out.add(-1);
             return;
         }
         out.add(node.data);
-        if(node.left != null) toArray(node.left, out); else toArray(null, out);
-        if(node.right != null) toArray(node.right, out); else toArray(null, out);
+        if (node.left != null) toArray(node.left, out); else toArray(null, out);
+        if (node.right != null) toArray(node.right, out); else toArray(null, out);
 
     }
 
+    /**
+     * Checks exact same structure + values.
+     * Used as helper for subtree checks.
+     */
     public boolean isIdentical(Node node, Node subNode) {
-        if(node == null && subNode == null)
+        if (node == null && subNode == null)
             return true;
 
-        if(node == null || subNode == null)
+        if (node == null || subNode == null)
             return false;
 
-        if(node.data == subNode.data){
+        if (node.data == subNode.data) {
             return isIdentical(node.left, subNode.left) && isIdentical(node.right, subNode.right);
         }
         return false;
     }
+
+    /**
+     * Returns true if `subNode` exists anywhere inside `node`.
+     * Time can be O(n*m) in worst case; good for understanding recursion first.
+     */
     public boolean isSubtree(Node node, Node subNode) {
-        if(subNode == null)
+        if (subNode == null)
             return true;
-        if(node == null)
+        if (node == null)
             return false;
-        if(isIdentical(node, subNode))
+        if (isIdentical(node, subNode))
             return true;
         return isSubtree(node.left, subNode) || isSubtree(node.right, subNode);
     }
@@ -112,10 +152,14 @@ public class BinaryTree {
         }
         return out;
     }
+
+    /**
+     * Level-order based question:
+     * - Compute sum at each level, sort descending, return k-th largest level sum.
+     */
     public int kthLargestSum(Node node, int k) {
         if (node == null) return -1;
 
-        // List to store all level sums
         ArrayList<Integer> levelSums = new ArrayList<>();
         Queue<Node> queue = new ArrayDeque<>();
         queue.add(node);
@@ -132,7 +176,6 @@ public class BinaryTree {
             levelSums.add(levelSum);
         }
 
-        // Sort sums descending to get kth largest
         levelSums.sort((a, b) -> b - a);
 
         if (k <= 0 || k > levelSums.size()) return -1;
@@ -148,13 +191,12 @@ public class BinaryTree {
 
         while (!q.isEmpty()) {
             int size = q.size();
-            // If current level is the k-th level
             if (level == k) {
                 for (int i = 0; i < size; i++) {
                     Node curr = q.poll();
                     sum += curr.data;
                 }
-                break; // No need to traverse further
+                break;
             } else {
                 for (int i = 0; i < size; i++) {
                     Node curr = q.poll();
@@ -166,29 +208,30 @@ public class BinaryTree {
         }
         return sum;
     }
-//    public int[] treeToArray(Node node) {
-//
-//    }
+
     public int countOfNodes(Node node) {
-        if(node == null)
+        if (node == null)
             return 0;
 
-        int x = 0, y = 0;
-        x = countOfNodes(node.left);
-        y = countOfNodes(node.right);
+        int x = countOfNodes(node.left);
+        int y = countOfNodes(node.right);
 
         return x + y + 1;
     }
 
     public int sumOfNodes(Node node) {
-        if(node == null)
+        if (node == null)
             return 0;
 
         return sumOfNodes(node.left) + sumOfNodes(node.right) + node.data;
     }
 
+    /**
+     * O(n^2) diameter approach:
+     * - For each node, compute left/right diameter and height.
+     */
     public int diameter(Node node) {
-        if(node == null)
+        if (node == null)
             return 0;
         int leftDiameter = diameter(node.left);
         int rightDiameter = diameter(node.right);
@@ -197,6 +240,8 @@ public class BinaryTree {
         return Math.max(Math.max(leftDiameter, rightDiameter), height);
 
     }
+
+    /** Helper object for O(n) optimized diameter. */
     class DiameterInfo {
         public int height;
         public int diameter;
@@ -207,13 +252,19 @@ public class BinaryTree {
         }
 
     }
+
     public int optimizedDiameter(Node node) {
         DiameterInfo d = this.calcOptimizedDiameter(node);
         return d.diameter;
     }
+
+    /**
+     * O(n) diameter approach:
+     * - Returns both height and best diameter in one traversal.
+     */
     public DiameterInfo calcOptimizedDiameter(Node node) {
-        if(node == null)
-            return new DiameterInfo(0,0);
+        if (node == null)
+            return new DiameterInfo(0, 0);
 
         DiameterInfo leftDiameter = calcOptimizedDiameter(node.left);
         DiameterInfo rightDiameter = calcOptimizedDiameter(node.right);
@@ -229,36 +280,13 @@ public class BinaryTree {
         return new DiameterInfo(myHeight, myDiameter);
 
     }
+
+    /** Height = max depth in nodes (root-only tree has height 1). */
     public int height(Node node) {
-        if(node == null)
+        if (node == null)
             return 0;
 
         return Math.max(height(node.left), height(node.right)) + 1;
-
-//        if(node == null)
-//            return 0;
-//
-//        Queue<Node> queue = new LinkedList<>();
-//        queue.add(node);
-//        queue.add(null);
-//        int height = 0;
-//
-//        while(!queue.isEmpty()) {
-//            Node n = queue.poll();
-//            if(n == null) {
-//                height++;
-//                if(queue.isEmpty())
-//                    break;
-//                else
-//                    queue.add(n);
-//            }
-//            else {
-//                if(n.left != null) queue.add(n.left);
-//                if(n.right != null) queue.add(n.right);
-//            }
-//        }
-//
-//        return height;
     }
 
 }
