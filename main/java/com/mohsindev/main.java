@@ -4,6 +4,8 @@ import com.mohsindev.array.SubArraySum;
 import com.mohsindev.tree.BinaryTree;
 import com.mohsindev.tree.Node;
 
+import java.util.Arrays;
+
 import static com.mohsindev.array.SubArraySum.kadaneSum;
 import static com.mohsindev.array.SubArraySum.maxSubArraySum;
 
@@ -40,6 +42,7 @@ class Main {
         System.out.println("Diameter (optimized) of tree: " + binaryTree.optimizedDiameter(root));
         System.out.println("root node: " + root.data);
         System.out.println("Sum of nodes at level 2: " + binaryTree.sumOfNodesAtLevel(root, 3));
+        System.out.println("Back to array: " + Arrays.toString(binaryTree.toArray(root)));
 
         System.out.println("--------------------------------"); //--------------------------------
         int[] tree2 = {1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1};

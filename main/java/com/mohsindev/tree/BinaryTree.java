@@ -22,6 +22,21 @@ public class BinaryTree {
         newNode.right = buildTree(nodes);
         return newNode;
     }
+    public int[] toArray(Node node){
+        ArrayList<Integer> output = new ArrayList<>();
+        toArray(node,output);
+        return output.stream().mapToInt(Integer::intValue).toArray();
+    }
+    private void toArray(Node node, ArrayList<Integer> out){
+        if(node == null) {
+            out.add(-1);
+            return;
+        }
+        out.add(node.data);
+        if(node.left != null) toArray(node.left, out); else toArray(null, out);
+        if(node.right != null) toArray(node.right, out); else toArray(null, out);
+
+    }
 
     public boolean isIdentical(Node node, Node subNode) {
         if(node == null && subNode == null)
